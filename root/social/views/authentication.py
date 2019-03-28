@@ -22,6 +22,7 @@ def signup(request):
 
 def logout(request):
     logout(request)
+    return redirect('/login')
 
 def validate_username(request):
     username = request.GET.get('username', None)

@@ -11,5 +11,5 @@
     {% endfor %}
     </ol>
 {% else %}
-    {% if user != theuser %} Looks like the user doesn't have any followers :( <br>Be the first to <a href="/follow/{{ theuser.pk }}">follow</a>! {% else %} Looks like you don't have any followers :( <br><a href="/">Write</a> some posts to get other's attention! {% endif %}
+    {% if user != theuser %} Looks like the user doesn't have any followers :( <br>Be the first to <a href="/follow/{{ theuser.pk }}">follow</a>! {% else %} Looks like you don't have any followers :( <br><a href="/">Write</a> some posts to draw other's attention! {% endif %}
 {% endif %}

@@ -26,11 +26,11 @@
 {% endblock %}
 
 {% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    <span class="center">{{ form.as_p }}</span>
-    <span class="center"><button type="submit">Sign up</button></span>
-  </form>
-Have an account? <a href="/login">Log in!</a>
+  <span><h2>Sign up</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}</span>
+      <button type="submit">Sign up</button>
+    </form>
+  Have an account? <a href="/login">Log in!</a></span>
 {% endblock %}

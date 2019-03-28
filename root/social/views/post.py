@@ -6,32 +6,55 @@ from social.models import User, Post, Likes, Dislikes
 from social.forms import PostForm, EditForm, DeleteForm
 
 
-
 def post(request):
     if request.user.is_authenticated and request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
             text = form.cleaned_data.get('post_text')
-            in_future = form.cleaned_data.get('post_in_future')
-            date = timezone.now()
-            
-            if in_future is not None and in_future > 0:
-                date += datetime.timedelta(days=in_future)
-            
+            image = request.FILES.get('post_image')
+            date = timezone.now()            
             post = Post(post_text=text, user=request.user, pub_date=date)
+            if image:
+                post = Post(post_text=text, user=request.user, pub_date=date, image=image)
             post.save()
-            
-            data= {
-                'post_text': escape(post.post_text),
-                'post_date': post.get_readable_date(),
-                'post_id': post.pk,
-                'user_id': request.user.pk,
-                'username': request.user.username,
-            }
-            
+
+            data = {}
+            data['post_image'] = None
+            if image:
+                data['post_image'] = post.image.url
+            data['post_text'] = escape(post.post_text)
+            data['post_date'] = post.get_readable_date()
+            data['post_id'] = post.pk
+            data['user_id'] = request.user.pk
+            data['username'] = request.user.username
             return JsonResponse(data)    
     return redirect('/')
 
+
+
+def databasecheck(request, post_id):
+    if request.user.is_authenticated:
+        data={'currentId':Post.objects.last().pk, 'lastId':post_id}
+        return JsonResponse(data)
+    return redirect('/')
+
+
+
+def getpostinfo(request, post_id):
+    if request.user.is_authenticated:
+        post = get_object_or_404(Post, pk=post_id)
+        data={
+            'post_text': escape(post.post_text),
+            'post_date': post.get_readable_date(),
+            'post_id': post.pk,
+            'user_id': post.user.pk,
+            'username': post.user.username,
+        }
+        if post.image:
+        	data['post_image'] = post.image.url
+        return JsonResponse(data)
+    return redirect('/')
+            
 
 
 def edit(request):

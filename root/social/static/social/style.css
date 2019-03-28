@@ -1,71 +1,71 @@
 ul {
     list-style-type: none;
-    }
+}
 
 li {
     padding: 30px 10px;
     margin-bottom: 50px;
     background: #F2FDFF;
     display: block;
-    }
+}
 
 li.comment {
     padding: 40px 20px;
     margin-left: 15px;
     background: #C3F0FF;
-    }
+}
 
 li.inreply {    
     margin: 20px 0px;
     margin-left: 35px;
     padding: 45px;
     background: #81E1E5;
-    }
+}
 
 label {
     font-size: 22px;
-    }
+}
 
 a {
     padding: 0px 2px 0px 1px;
-    }
+}
 
 strong.stronger {
     font-size: 30px;
-    }
+}
 
 img {
     border: 2px solid black;
     border-radius: 5px;
     margin: 0;
-    }
+}
 
 img.main {
     width: 40px;
     height: 40px;
-    }
+}
 
 img.reply {
     width: 20px;
     height: 20px;
-    }
+}
 
 span.none {
     padding: 15px 0px 0px;
     display: none;
     word-wrap: break-word;
-    }
+}
 
 span.changenone {
     padding: 10px 20px;
     display: none;
     word-wrap: break-word;
-    }
+}
 
 span.extrapadding {
     padding: 10px 20px;
     display: block;
-    }
+}
 
 span.center {
 	text-align: center;
@@ -73,37 +73,43 @@ span.center {
 	display: block;
 }
 
+span.smallercenterfont {
+	text-align: center;
+	font-size: 1.5em;
+	display: block;
+}
+
 div.flex {
     display: inline;
     margin: 0;
     display: flex;
-    }
+}
 
 div.comment {
     display:inline;
     color: #0C1617;
     font-size: 35px;
     padding: 20px 20px;
-    }
+}
 
 div.commentsub {
     color: green;
     font-size: 20px;
     padding: 0px 0px 0px 20px;
     display: block;
-    }
+}
 
 div.reply {
     display: inline;
     color: #0C1617;
     font-size: 30px;
     padding: 0px 15px 0px 0px; 
-    }
+}
 
 div.replysub {
     color: green;
     font-size: 20px;
-    }
+}
     
 div.main {
     color: #141214;
@@ -111,34 +117,34 @@ div.main {
     display: topmiddle;
     margin-right: 400px;
     padding: 20px 20px;
-    }
+}
 
 div.sub {
     color: green;
     font-size: 22px;
     padding: 10px 20px 0px;
     display: block;
-    }
+}
 
 div.user {
     color: #141214;
     font-size: 35px;
     text-align: center;
-    }
+}
 
 div.like {
     color: dodgerblue;
     font-size: 68px;
     font-weight: bold;
     display: inline;
-    }
+}
 
 div.dislike {
     color: #E23D28;
     font-size: 68px;
     font-weight: bold;
     display: inline;
-    }
+}
 
 input[type=text], select {
     margin: 0;

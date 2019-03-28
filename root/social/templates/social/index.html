@@ -1,25 +1,27 @@
 <head>
- <title>Home</title>
+  <title>Home</title>
+  {% extends 'social/base.html' %}
+  {% load staticfiles %}
+  {% load tags %}
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="{% static 'social/basecript.js' %}"></script>
+
 </head>
-{% extends 'social/base.html' %}
-{% load staticfiles %}
-{% load tags %}
-<script src="{% static 'social/script.js' %}"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
 {% block content %}
-<span class="center">Hi <a href="/user/{{ user.pk }}">{{ user.username }}!</a><a href="/logout"><img class="main" alt="log out" src="{% static 'icons/sign-out-alt.svg' %}" ></a></span>
+  <span class="center">Hi <a href="/user/{{ user.pk }}">{{ user.username }}!</a><a href="/logout"><img class="main" alt="log out" src="{% static 'icons/sign-out-alt.svg' %}" ></a></span>
 
-<div class="main">Write a post!</div>
+  <div class="main">Write a post!</div>
 
 
-<form id="post_form" method="post" onsubmit="create_post()">
-<div class="flex">{{ postform.post_text }}
-<img onclick="toggle_visibility('drop_down_button');" alt="down" src="{% static 'icons/arrow-down.svg' %}" height="36px" width="36px"></div>
-<span class="none" id="drop_down_button">
-{{ postform.post_in_future }}
-<br><small>If you want to make your post appear in future, please enter a <strong>number</strong> of days.</small></span>
-<br><input type="submit" value="post">
+  <form id="post_form" method="post" onsubmit="createPost()">
+  <div class="flex">{{ postform.post_text }}
+  <img onclick="toggleVisibility('drop_down_button');" alt="down" src="{% static 'icons/arrow-down.svg' %}" height="36px" width="36px"></div>
+  <span class="none" id="drop_down_button">
+    {{ postform.post_image }}
+    <br><small>attach image here</small>
+  </span>
+  <br><input type="submit" value="post">
 </form>
 
 {% endblock %}

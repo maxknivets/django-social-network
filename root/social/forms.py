@@ -5,7 +5,7 @@ from social.models import Post
 
 class SignUpForm(UserCreationForm):
 
-    email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
+    email = forms.EmailField(max_length=254)
 
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
@@ -23,7 +23,7 @@ class LoginForm(forms.Form):
 
 class PostForm(forms.Form):
     post_text = forms.CharField(min_length=1, max_length=2500, widget=forms.TextInput(attrs={'placeholder': 'How was your day?', 'id': 'post-field'}))
-    post_in_future = forms.IntegerField(required=False, widget=forms.TextInput(attrs={'placeholder': 'how long?', 'id': 'in-future-field'}))
+    post_image = forms.ImageField(required=False)
 
 class EditForm(forms.Form):
     id = forms.IntegerField(widget=forms.TextInput(attrs={'id': 'edit-id'}))
@@ -43,4 +43,8 @@ class ChangeForm(forms.Form):
     last_name = forms.CharField(max_length=200, required=False, widget=forms.TextInput(attrs={'placeholder': 'Your last name', 'id': 'last-name-field'}))
     bio = forms.CharField(max_length=2500, required=False, widget=forms.TextInput(attrs={'placeholder': 'Tell something cool', 'id': 'bio-field'}))
     location = forms.CharField(max_length=200, required=False, widget=forms.TextInput(attrs={'placeholder': 'Your current location', 'id': 'location-field'}))
+
+class PFPForm(forms.Form):
+    profile_picture = forms.ImageField()
     
+

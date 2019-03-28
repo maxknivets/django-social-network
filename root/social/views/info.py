@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
-from social.models import User, Post, Comment, Followers, Profile
-from social.forms import EditForm, DeleteForm, CommentForm, ChangeForm
+from social.models import User, Post, Comment, Followers, Profile, ProfilePicture
+from social.forms import EditForm, DeleteForm, CommentForm, ChangeForm, PFPForm
 import datetime, pdb
 
 
@@ -31,13 +31,29 @@ def settings(request):
 
 
 
+def changepfp(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        form = PFPForm(request.POST, request.FILES)
+        if form.is_valid():
+            picture = ProfilePicture.objects.filter(user=request.user).first()
+            if picture.profile_picture:
+                picture.profile_picture = form.cleaned_data['profile_picture']
+            else:
+                picture = ProfilePicture(user = request.user, profile_picture = form.cleaned_data['profile_picture'])
+            picture.save()
+            return redirect('/user/%s' % request.user.pk)
+    return redirect('/')
+
+
+
 def user(request, user_id):
     if request.user.is_authenticated:
         user = get_object_or_404(User, pk=user_id)
+        profile_picture = ProfilePicture.objects.filter(user=user).first()
         users_posts = Post.objects.filter(user=user)
         info = Profile.objects.filter(user=user).first()
         following = Followers.objects.filter(is_followed_by=user)
-        return render(request, 'social/user.html', {'profile':info,'theuser':user, 'latest_posts_list':users_posts, 'following':following, 'editform':EditForm(), 'commentform':CommentForm(), 'changeform':ChangeForm()})
+        return render(request, 'social/user.html', {'profile':info,'theuser':user, 'pfp':profile_picture, 'latest_posts_list':users_posts, 'latest_post':users_posts.first(), 'following':following, 'editform':EditForm(), 'commentform':CommentForm(), 'changeform':ChangeForm(), 'pfpform':PFPForm()})
     return redirect('/')
 
 

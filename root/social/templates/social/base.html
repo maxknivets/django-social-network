@@ -15,21 +15,23 @@
       var commentEditToken = '{{ csrf_token }}'
       var profileChangeToken = '{{ csrf_token }}'
     </script>
-    <script src="{% static 'social/script.js' %}"></script>
   </head>
+  
+  
   
   <body>
     <main>
+      <div style="display:none;" id="page">base</div>
       {% block content %}
       {% endblock %}
       
-      
       <!-- here comes the beginning of post list -->
       <ul id="posts">
-      {% for post in latest_posts_list %} 
-      
+      <div style="display:none;" id="currentpost">{{ latest_post.pk }}</div>
+      {% for post in latest_posts_list %}
       <li id="post{{ post.pk }}"><div class="main" id="post_text{{ post.pk }}">{{ post.post_text }}</div>
-        <div class="sub">Posted by <a href="{% url 'social:user' post.user.pk %}">{{ post.user.username }}</a> on {{ post.get_readable_date }}</div><br>
+        {% if post.image %} <img src="{{ post.image.url }}" alt="post-image{{ post.pk }}">{% endif %}
+        <div class="sub">Posted by <a href="{% url 'social:user' post.user.pk %}">{{ post.user.username }}</a> at {{ post.get_readable_date }}</div><br>
         
         <img class="main" alt="like" src="{% static 'icons/thumbs-up.svg' %}" onclick="like({{ post.pk }})">
         <div id="total_likes{{ post.pk }}" class="like">{% total_likes post %}</div>
@@ -39,23 +41,23 @@
         
         {% if post.user == user %}
         
-        <img class="main" src="{% static 'icons/pencil-alt.svg' %}" onclick="toggle_visibility('edit{{ post.pk }}');">
-        <img class="main" alt="delete" src="{% static 'icons/trash-alt.svg' %}" onclick="toggle_visibility('delete{{ post.pk }}');">
+        <img class="main" src="{% static 'icons/pencil-alt.svg' %}" onclick="toggleVisibility('edit{{ post.pk }}');">
+        <img class="main" alt="delete" src="{% static 'icons/trash-alt.svg' %}" onclick="toggleVisibility('delete{{ post.pk }}');">
         
-        <span class="changenone" id="delete{{ post.pk }}"><strong class="stronger">Delete the post?</strong><button class="coolbutton" onclick="delete_post({{ post.pk }})">Yes, delete it.</button></span>
+        <span class="changenone" id="delete{{ post.pk }}"><strong class="stronger">Delete the post?</strong><button class="coolbutton" onclick="deletePost({{ post.pk }})">Yes, delete it.</button></span>
         
         <span class="changenone" id="edit{{ post.pk }}">
-          <form onsubmit="edit_post({{ post.pk }})">
+          <form onsubmit="editPost({{ post.pk }})">
             <label for="edit-field">New text:</label>
-            {{ editform.new_text }}
+            <input type="text" name="new_text" placeholder="Edit here" id="edit-field" maxlength="2500" minlength="1" value="{{ post.post_text }}" required="">
             {{ editform.id.as_hidden }}
-          <input type="submit" value="Edit">
+            <input type="submit" value="Edit">
           </form>
         </span>
         {% endif %}
         
         <span class="extrapadding" id="comment_in_reply{{ post.pk }}">
-          <form onsubmit="comment_in_reply({{ post.pk }})">
+          <form onsubmit="commentInReply({{ post.pk }})">
             {{ commentform }}
             <input type="submit" value="comment">
           </form>
@@ -64,20 +66,21 @@
         
         
         <ul id="comment_section{{ post.pk }}">
-          {% for comment in post.comment_set.all %} 
-          
-          <li class="{% if comment.in_reply_to_comment %}inreply{% else %}comment{% endif %}" id="comment{{ comment.pk }}"><div class="comment" id="comment_text{{ comment.pk }}">{{ comment }}</div><img class="reply" alt="down" src="{% static 'icons/arrow-down.svg' %}" onclick="toggle_visibility('comment_in_reply{{ comment.pk }}');">
+          <div style="display:none;" id="currentcomment">{{ post.comment_set.all.last.pk }}</div>
+          {% for comment in post.comment_set.all %}
+
+          <li class="{% if comment.in_reply_to_comment %}inreply{% else %}comment{% endif %}" id="comment{{ comment.pk }}"><div class="comment" id="comment_text{{ comment.pk }}">{{ comment }}</div><img class="reply" alt="down" src="{% static 'icons/arrow-down.svg' %}" onclick="toggleVisibility('comment_in_reply{{ comment.pk }}');">
           
           {% if comment.posted_by == user %}
-          <img class="reply" alt="delete" src="{% static 'icons/trash-alt.svg' %}" onclick="toggle_visibility('delete_comment{{ comment.pk }}');">
-          <img class="reply" src="{% static 'icons/pencil-alt.svg' %}" onclick="toggle_visibility('edit_comment{{ comment.pk }}');">
+          <img class="reply" alt="delete" src="{% static 'icons/trash-alt.svg' %}" onclick="toggleVisibility('delete_comment{{ comment.pk }}');">
+          <img class="reply" src="{% static 'icons/pencil-alt.svg' %}" onclick="toggleVisibility('edit_comment{{ comment.pk }}');">
           
-          <span class="changenone" id="delete_comment{{ comment.pk }}"><strong class="stronger">Delete the comment? </strong><button class="coolButton" onclick="delete_comment({{ comment.pk }})">Yes, delete it.</button></span>
+          <span class="changenone" id="delete_comment{{ comment.pk }}"><strong class="stronger">Delete the comment? </strong><button class="coolButton" onclick="deleteComment({{ comment.pk }})">Yes, delete it.</button></span>
           
           <span class="changenone" id="edit_comment{{ comment.pk }}">
-            <form onsubmit="edit_comment({{ comment.pk }})">
+            <form onsubmit="editComment({{ comment.pk }})">
               <label for="edit-field">New text:</label>
-              {{ editform.new_text }}
+              <input type="text" name="new_text" placeholder="Edit here" id="edit-field" maxlength="2500" minlength="1" value="{{ comment }}" required="">
               {{ editform.id.as_hidden }}
               <input type="submit" value="edit">
             </form>
@@ -86,7 +89,7 @@
           {% endif %}          
           
           <span class="changenone" id="comment_in_reply{{ comment.pk }}">
-            <form onsubmit="comment_in_reply({{ post.pk }}, {{ comment.pk }})">
+            <form onsubmit="commentInReply({{ post.pk }}, {{ comment.pk }})">
               {{ commentform }}
               <input type="hidden" id="in_reply_to_user{{ comment.pk }}" value="{{ comment.posted_by.pk }}">
               <input type="hidden" id="in_reply_to_comment{{ comment.pk }}" value="{{ comment.pk }}">
@@ -94,7 +97,7 @@
             </form>
           </span>
           
-          <div class="commentsub"> commented by <a href="{% url 'social:user' comment.posted_by.pk %}">{{ comment.posted_by }}</a>{% if comment.in_reply_to_comment %} in reply to <a href="{% url 'social:user' comment.in_reply_to_user %}">{{ comment.get_user }}</a>'s <a href="{% url 'social:showcomment' comment.in_reply_to_comment %}">comment</a> {% endif %}<br><small>Posted on  {{ comment.get_readable_date }}</small></div>
+          <div class="commentsub"> commented by <a href="{% url 'social:user' comment.posted_by.pk %}">{{ comment.posted_by }}</a>{% if comment.in_reply_to_comment %} in reply to <a href="{% url 'social:user' comment.in_reply_to_user %}">{{ comment.get_user }}</a>'s <a href="{% url 'social:showcomment' comment.in_reply_to_comment %}">comment</a> {% endif %}<br><small>Posted at  {{ comment.get_readable_date }}</small></div>
           </li>
           {% endfor %} <!-- end of the comment list -->
         </ul>
@@ -104,6 +107,7 @@
       </ul>
     </main>
   </body>
+<script src="{% static 'social/basescript.js' %}"></script>
 </html>
 
 
