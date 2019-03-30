@@ -353,7 +353,7 @@ function changeProfilePicture() {
 
 
 
-function addPost (postId) {
+function addPost (postId) {//fix priviliges (editing and deleting button) here
 	$.ajax({
 		url:`/ajax/getpostinfo/${postId}`,
 		dataType:'json',
@@ -364,18 +364,10 @@ function addPost (postId) {
 			var post_id=data.post_id;
 			var post_username=data.username;
 			var post_user_id=data.user_id;
-			var post_image=""
-			if (data.post_image) {
-				var post_image=`<img src="${data.post_image}" alt="post-image${data.post_id}">`
-				}
-			$('#posts').prepend(`
-
-<li id="post${post_id}"><div class="main" id="post_text${post_id}">${post_text}</div>${post_image}<div class="sub">Posted by <a href="/user/${post_user_id}">${post_username}</a> on ${post_date}</div>
-
-<img class="main" onclick="like(${post_id})" alt="like" src="static/icons/thumbs-up.svg"><div id="total_likes${post_id}" class="like">0</div>
-<img class="main" onclick="dislike(${post_id})" alt="dislike" src="/static/icons/thumbs-down.svg"><div id="total_dislikes${post_id}" class="dislike">0</div>
-
-<img class="main" src="/static/icons/pencil-alt.svg" onclick="toggleVisibility('edit${post_id}');">
+			var request_user_id=data.request_user_id;
+			var post_image="";
+			if (post_user_id==request_user_id){
+				var actions=`<img class="main" src="/static/icons/pencil-alt.svg" onclick="toggleVisibility('edit${post_id}');">
 <img class="main" alt="delete" src="/static/icons/trash-alt.svg" onclick="toggleVisibility('delete${post_id}');">
 
 <span class="changenone" id="delete${post_id}"><strong class="stronger">Delete the post?</strong><button class="coolButton" onclick="deletePost(${post_id})">Yes, delete it.</button></span>
@@ -387,6 +379,19 @@ function addPost (postId) {
 <input type="submit">
 </form>
 </span>
+`
+			}
+			if (data.post_image) {
+				var post_image=`<img src="${data.post_image}" alt="post-image${data.post_id}">`
+				}
+			$('#posts').prepend(`
+
+<li id="post${post_id}"><div class="main" id="post_text${post_id}">${post_text}</div>${post_image}<div class="sub">Posted by <a href="/user/${post_user_id}">${post_username}</a> on ${post_date}</div>
+
+<img class="main" onclick="like(${post_id})" alt="like" src="static/icons/thumbs-up.svg"><div id="total_likes${post_id}" class="like">0</div>
+<img class="main" onclick="dislike(${post_id})" alt="dislike" src="/static/icons/thumbs-down.svg"><div id="total_dislikes${post_id}" class="dislike">0</div>
+
+${actions}
 
 <span class="extrapadding" id="comment_in_reply${post_id}">
 <form onsubmit="commentInReply(${post_id})">
@@ -394,7 +399,6 @@ function addPost (postId) {
 <input type="submit" value="comment">
 </form>
 </span>
-
 <ul id="comment_section${post_id}"></ul>
 
 `);
@@ -410,8 +414,7 @@ function addPost (postId) {
 
 
 
-
-function addComment(comment_id) {
+function addComment(comment_id) { //fix priviliges (editing and deleting button) here
 	$.ajax({
 		url: `/ajax/getcommentinfo/${comment_id}`,
 		dataType: 'json',
@@ -423,9 +426,20 @@ function addComment(comment_id) {
 			var comment_posted_by_id=data.posted_by_id;
 			var comment_type='comment';
 			var user_id=data.user_id;
+			var request_user_id=data.request_user_id;
 			var post_date=data.date;
 			var in_reply_to_user=data.in_reply_to_user;
-			var in_reply_to_comment=data.in_reply_to_comment;
+			var in_reply_to_comment=data.in_reply_to_comment
+			if (user_id == request_user_id) {
+				var actions=`<span class="changenone" id="delete_comment${comment_id}"><strong class="stronger">Delete the comment? </strong><button class="coolButton" onclick="deleteComment(${comment_id})">Yes, delete it.</button></span>
+
+<span class="changenone" id="edit_comment${comment_id}">
+<form onsubmit="editComment(${comment_id})">
+New text: <input type="text" placeholder="Edit here" minlength="1" maxlength="2500"  id="edit-field" value="${comment_text}">
+<input type="submit" value="edit">
+</form>
+</span>`
+			}
 			if (in_reply_to_user && in_reply_to_comment) {
 				$(`#comment_in_reply${in_reply_to_comment} #comment-field`).val('');
 				var get_username=data.get_username;
@@ -443,16 +457,10 @@ function addComment(comment_id) {
 <img class="reply" alt="delete" src="/static/icons/trash-alt.svg" onclick="toggleVisibility('delete_comment${comment_id}');">
 <img class="reply" src="/static/icons/pencil-alt.svg" onclick="toggleVisibility('edit_comment${comment_id}');">
 
+${actions}
+
 <div class="commentsub"> commented by<a href="/user/${user_id}">${comment_posted_by}</a>${reply}<small><br> Posted on ${post_date}</small></div>
 
-<span class="changenone" id="delete_comment${comment_id}"><strong class="stronger">Delete the comment? </strong><button class="coolButton" onclick="deleteComment(${comment_id})">Yes, delete it.</button></span>
-
-<span class="changenone" id="edit_comment${comment_id}">
-<form onsubmit="editComment(${comment_id})">
-New text: <input type="text" placeholder="Edit here" minlength="1" maxlength="2500"  id="edit-field" value="${comment_text}">
-<input type="submit" value="edit">
-</form>
-</span>
 
 
 <span class="none" id="comment_in_reply${comment_id}">
@@ -532,13 +540,14 @@ function changeLastCommentId() {
 }
 
 
-var currentComment = setInterval(function() { updateCommentView($('#currentcomment').text()) }, 5000);
-var currentPost = setInterval(function() { updateView($('#currentpost').text()) }, 5000);
 
-
-if ($('#page') == 'base') {
+if ($('title').text() == 'Home Home ') { //investigate why it's "Home Home " but not Home
+	var currentComment = setInterval(function() { updateCommentView($('#currentcomment').text()) }, 5000);
+	var currentPost = setInterval(function() { updateView($('#currentpost').text()) }, 5000);	
+}
+else {
 	var currentComment = null
 	var currentPost = null
-}
+	}
 
 

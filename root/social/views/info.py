@@ -36,7 +36,7 @@ def changepfp(request):
         form = PFPForm(request.POST, request.FILES)
         if form.is_valid():
             picture = ProfilePicture.objects.filter(user=request.user).first()
-            if picture.profile_picture:
+            if picture:
                 picture.profile_picture = form.cleaned_data['profile_picture']
             else:
                 picture = ProfilePicture(user = request.user, profile_picture = form.cleaned_data['profile_picture'])

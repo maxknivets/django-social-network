@@ -44,7 +44,7 @@
         <img class="main" src="{% static 'icons/pencil-alt.svg' %}" onclick="toggleVisibility('edit{{ post.pk }}');">
         <img class="main" alt="delete" src="{% static 'icons/trash-alt.svg' %}" onclick="toggleVisibility('delete{{ post.pk }}');">
         
-        <span class="changenone" id="delete{{ post.pk }}"><strong class="stronger">Delete the post?</strong><button class="coolbutton" onclick="deletePost({{ post.pk }})">Yes, delete it.</button></span>
+        <span class="changenone" id="delete{{ post.pk }}"><strong class="stronger">Delete the post?</strong><button class="coolButton" onclick="deletePost({{ post.pk }})">Yes, delete it.</button></span>
         
         <span class="changenone" id="edit{{ post.pk }}">
           <form onsubmit="editPost({{ post.pk }})">

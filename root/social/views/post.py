@@ -47,6 +47,7 @@ def getpostinfo(request, post_id):
             'post_text': escape(post.post_text),
             'post_date': post.get_readable_date(),
             'post_id': post.pk,
+            'request_user_id': request.user.pk,
             'user_id': post.user.pk,
             'username': post.user.username,
         }

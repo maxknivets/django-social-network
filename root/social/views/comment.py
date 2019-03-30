@@ -80,7 +80,8 @@ def getcommentinfo(request, comment_id):
             data['get_username']=comment.get_user().username
         else:
             data['in_reply_to_user']=None
-            data['in_reply_to_comment']=None            
+            data['in_reply_to_comment']=None
+        data['request_user_id']=request.user.pk
         data['post_id']=comment.post.pk
         data['comment_text']=escape(comment.comment)
         data['comment_pk']=comment.pk
