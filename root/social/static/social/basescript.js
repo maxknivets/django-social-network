@@ -353,7 +353,7 @@ function changeProfilePicture() {
 
 
 
-function addPost (postId) {//fix priviliges (editing and deleting button) here
+function addPost (postId) {
 	$.ajax({
 		url:`/ajax/getpostinfo/${postId}`,
 		dataType:'json',
@@ -414,7 +414,7 @@ ${actions}
 
 
 
-function addComment(comment_id) { //fix priviliges (editing and deleting button) here
+function addComment(comment_id) {
 	$.ajax({
 		url: `/ajax/getcommentinfo/${comment_id}`,
 		dataType: 'json',
@@ -541,7 +541,7 @@ function changeLastCommentId() {
 
 
 
-if ($('title').text() == 'Home Home ') { //investigate why it's "Home Home " but not Home
+if ($('title').text() == 'Home Home ') { 
 	var currentComment = setInterval(function() { updateCommentView($('#currentcomment').text()) }, 5000);
 	var currentPost = setInterval(function() { updateView($('#currentpost').text()) }, 5000);	
 }
