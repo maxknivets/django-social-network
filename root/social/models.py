@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # username,  first_name, last_name, email, password, groups, user_permissions, is_staff, is_active, is_superuser, last_login, date_joined
 
 class Post(models.Model):
-    post_text = models.CharField(max_length=1000)
+    post_text = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     pub_date = models.DateTimeField('Publication Date')
     image = models.ImageField(upload_to='post-images', blank=True)
@@ -22,7 +22,7 @@ class Post(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.CharField(max_length=300, blank=True)
+    bio = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=100,blank=True)
     
     def __str__(self):
@@ -65,7 +65,7 @@ class Dislikes(models.Model):
 
 
 class Comment(models.Model):
-    comment = models.CharField(max_length=1000)
+    comment = models.CharField(max_length=200)
     post_date = models.DateTimeField('Publication Date')
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

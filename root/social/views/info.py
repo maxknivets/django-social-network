@@ -50,10 +50,11 @@ def user(request, user_id):
     if request.user.is_authenticated:
         user = get_object_or_404(User, pk=user_id)
         profile_picture = ProfilePicture.objects.filter(user=user).first()
+        logged_user_profile_picture = ProfilePicture.objects.filter(user=request.user).first()
         users_posts = Post.objects.filter(user=user)
         info = Profile.objects.filter(user=user).first()
         following = Followers.objects.filter(is_followed_by=user)
-        return render(request, 'social/user.html', {'profile':info,'theuser':user, 'pfp':profile_picture, 'latest_posts_list':users_posts, 'latest_post':users_posts.first(), 'following':following, 'editform':EditForm(), 'commentform':CommentForm(), 'changeform':ChangeForm(), 'pfpform':PFPForm()})
+        return render(request, 'social/user.html', {'profile':info,'theuser':user, 'pfp':profile_picture, 'loggeduserpfp': logged_user_profile_picture,'latest_posts_list':users_posts, 'latest_post':users_posts.first(), 'following':following, 'editform':EditForm(), 'commentform':CommentForm()})
     return redirect('/')
 
 

@@ -2,7 +2,6 @@
 {% extends 'registration/base.html' %}
 {% load staticfiles %}
 
-
 {% block javascript %}
   <script>
     $("#id_username").change(function () {
@@ -16,21 +15,22 @@
         dataType: 'json',
         success: function (data) {
           if (data.is_taken) {
-            alert("A user with this username already exists.");
+            alert("This username is already taken.");
             }
         }
       });
-
     });
   </script>
 {% endblock %}
 
 {% block content %}
-  <span><h2>Sign up</h2>
+  <span class="centered">
+    <p>Sign up</p>
     <form method="post">
       {% csrf_token %}
-      {{ form.as_p }}</span>
+      {{ form.as_p }}
       <button type="submit">Sign up</button>
     </form>
-  Have an account? <a href="/login">Log in!</a></span>
+    Have an account? <a href="/login">Log in!</a>
+  </span>
 {% endblock %}

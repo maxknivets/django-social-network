@@ -6,15 +6,13 @@ function toggleVisibility(id) {
 		block.style.display = 'block';
 	}
 
-
-    
 function createPost() {
 	event.preventDefault();
 	var text=$('#post-field').val();
 	var image=$('#id_post_image')[0].files[0];
 	data = new FormData();
 	data.append('image',image)
-	data.append('csrfmiddlewaretoken',postToken)
+	data.append('csrfmiddlewaretoken',csrf_token)
 	data.append('post_text',text)
 	data.append('post_image', image)
 	$.ajax({
@@ -68,7 +66,7 @@ function createPost() {
 
 `);
 		changeLastId();
-		console.log("success");
+		console.log("Success!");
 },
 		error: function() {
 			console.log("Error!");
@@ -89,7 +87,7 @@ function like(post_id) {
 			if(data){
 				$(`#total_likes${post_id}`).text(data.total_likes);
  				$(`#total_dislikes${post_id}`).text(data.total_dislikes);
- 				console.log('success');
+ 				console.log('Success!');
 			}
 		},
 		error:function (xhr, ajaxOptions, thrownError){
@@ -132,7 +130,7 @@ function editPost(post_id) {
 	var text=$('#edit-field').val()
 	$.ajax({
 		url: '/ajax/edit/',
-		data: { csrfmiddlewaretoken: postEditToken, id: post_id, new_text: text },
+		data: { csrfmiddlewaretoken: csrf_token, id: post_id, new_text: text },
 		dataType: 'json',
 		type: 'POST',
 		success: function (data) {
@@ -175,7 +173,7 @@ function deletePost(post_id) {
 function commentInReply(post_id, comment_id=false) {
 	event.preventDefault();
 	var text=$(`#comment_in_reply${post_id} #comment-field`).val()
-	comment_data={ 'csrfmiddlewaretoken': commentToken, 'id': post_id, 'comment': text, 'in_reply_to_user': 0, 'in_reply_to_comment': 0 }
+	comment_data={ 'csrfmiddlewaretoken': csrf_token, 'id': post_id, 'comment': text, 'in_reply_to_user': 0, 'in_reply_to_comment': 0 }
 	if (comment_id) {
 		comment_data['comment'] = $(`#comment_in_reply${comment_id} #comment-field`).val();
 		comment_data['in_reply_to_user'] = $(`#in_reply_to_user${comment_id}`).val();
@@ -257,7 +255,7 @@ function editComment(comment_id) {
 	var text=$(`#edit_comment${comment_id} #edit-field`).val();
 	$.ajax({
 		url: '/ajax/commentedit/',
-		data: { csrfmiddlewaretoken: commentEditToken, id: comment_id, new_text: text },
+		data: { csrfmiddlewaretoken: csrf_token, id: comment_id, new_text: text },
 		dataType: 'json',
 		type: 'POST',
 		success: function (data) {
@@ -316,7 +314,7 @@ function bioChange() {
 	var location = $(`#location-field`).val();
 	$.ajax({
 		url: '/ajax/settings/',
-		data: { csrfmiddlewaretoken: profileChangeToken, first_name: firstName, last_name: lastName, bio: bio, location: location },
+		data: { csrfmiddlewaretoken: csrf_token, first_name: firstName, last_name: lastName, bio: bio, location: location },
 		dataType: 'json',
 		type: 'POST',
 		success: function (data) {
@@ -548,6 +546,5 @@ if ($('title').text() == 'Home Home ') {
 else {
 	var currentComment = null
 	var currentPost = null
-	}
-
+}
 

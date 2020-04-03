@@ -2,8 +2,6 @@ from django.contrib.auth import authenticate, login, logout
 from social.forms import SignUpForm
 from django.shortcuts import render, redirect
 
-
-
 def signup(request):
     if request.user.is_authenticated:
         return redirect('/')
@@ -24,10 +22,10 @@ def logout(request):
     logout(request)
     return redirect('/login')
 
+# ajax endpoint
 def validate_username(request):
     username = request.GET.get('username', None)
     data = {
         'is_taken': User.objects.filter(username__iexact=username).exists()
     }
     return JsonResponse(data)
-
