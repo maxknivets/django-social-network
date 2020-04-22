@@ -74,8 +74,6 @@ function publishPost() {
 	});
 }
 
-
-
 function like(post_id) {
 	$.ajax({
 		url: '/api/likes/',
@@ -99,8 +97,6 @@ function like(post_id) {
 	});
 };
 
-
-
 function dislike(post_id) {
 	$.ajax({
 		url: '/api/dislikes/',
@@ -122,8 +118,6 @@ function dislike(post_id) {
 		}
 	});
 };
-
-
 
 function editPost(post_id) {
 	event.preventDefault();
@@ -147,8 +141,6 @@ function editPost(post_id) {
 	});
 };
 
-
-
 function deletePost(post_id) {
 	$.ajax({
 		url: '/api/delete/',
@@ -167,8 +159,6 @@ function deletePost(post_id) {
 		}	
 	});
 };
-    
-
 
 function commentInReply(post_id, comment_id=false) {
 	event.preventDefault();
@@ -248,8 +238,6 @@ New text: <input type="text" placeholder="Edit here" minlength="1" maxlength="25
 	});
 };
 
-
-
 function editComment(comment_id) {
 	event.preventDefault();
 	var text=$(`#edit_comment${comment_id} #edit-field`).val();
@@ -269,8 +257,6 @@ function editComment(comment_id) {
 	});
 };
 
-
-
 function deleteComment(comment_id) {
 	$.ajax({
 		url: '/api/commentdelete/',
@@ -286,8 +272,6 @@ function deleteComment(comment_id) {
 	});
 };    
 
-
-
 function followUser(user_id) {
 	$.ajax({
 		url: '/api/follow/',
@@ -302,37 +286,7 @@ function followUser(user_id) {
 			console.log('error!');
 		}
 	});
-};    
-
-
-
-function bioChange() {
-	event.preventDefault();
-	var firstName = $(`#first-name-field`).val();
-	var lastName = $(`#last-name-field`).val();
-	var bio = $(`#bio-field`).val();
-	var location = $(`#location-field`).val();
-	$.ajax({
-		url: '/api/settings/',
-		data: { csrfmiddlewaretoken: csrf_token, first_name: firstName, last_name: lastName, bio: bio, location: location },
-		dataType: 'json',
-		type: 'POST',
-		success: function (data) {
-			$('#first-name-field').val('');
-			$('#last-name-field').val('');
-			$('#bio-field').val('');
-			$('#location-field').val('');
-			$('#first_name').text(data.first_name);
-			$('#last_name').text(data.last_name);
-			$('#bio').text(data.bio);
-			$('#location').text(data.location)
-			console.log('success');
-		},
-		error: function() {
-			console.log('error!');
-		}
-	});
-}
+};
 
 function addPost (postId) {
 	$.ajax({
@@ -390,10 +344,6 @@ ${actions}
 		}
 	});
 }
-
-
-
-
 
 function addComment(comment_id) {
 	$.ajax({
@@ -465,9 +415,6 @@ ${actions}
 	});
 };
 
-
-
-
 function updateView(lastId) {
 	$.ajax({
 		url:`/api/databasecheck/${lastId}`,
@@ -485,10 +432,6 @@ function updateView(lastId) {
 		}
 	});
 }
-
-
-
-
 
 function updateCommentView(lastId) {
 	$.ajax({
@@ -508,9 +451,51 @@ function updateCommentView(lastId) {
 	});
 }
 
-function sayRandomStuff() {
-	var randomstuff = ["Can't follow yourself", "Why would you follow yourself", "Following yourself is dumb"]
-	$("#followYourself").text(randomstuff[Math.floor(Math.random()*randomstuff.length)])
+$(document).ready(function(){
+	$("#info-message").fadeOut(7000);
+});
+
+function bioChange() {
+	event.preventDefault();
+	var firstName = $(`#first-name-field`).val();
+	var lastName = $(`#last-name-field`).val();
+	var bio = $(`#bio-field`).val();
+	var location = $(`#location-field`).val();
+	$.ajax({
+		url: '/api/settings/',
+		data: { csrfmiddlewaretoken: csrf_token, first_name: firstName, last_name: lastName, bio: bio, location: location },
+		dataType: 'json',
+		type: 'POST',
+		success: function (data) {
+			$('#first-name-field').val('');
+			$('#last-name-field').val('');
+			$('#bio-field').val('');
+			$('#location-field').val('');
+			$('#first_name').text(data.first_name);
+			$('#last_name').text(data.last_name);
+			$('#bio').text(data.bio);
+			$('#location').text(data.location)
+			console.log('success');
+		},
+		error: function() {
+			console.log('error!');
+		}
+	});
+}
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#blah')
+                .attr('src', e.target.result)
+                .width(100)
+                .height(100);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
 }
 
 function changeLastId() {

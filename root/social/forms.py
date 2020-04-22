@@ -41,3 +41,4 @@ class Change_profile_info_form(forms.Form):
 
 class Profile_picture_form(forms.Form):
     profile_picture = forms.ImageField()
+    profile_picture.widget.attrs.update({'id': 'img-input'})

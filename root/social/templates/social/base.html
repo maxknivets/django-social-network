@@ -23,7 +23,7 @@
           <br>
           <div>
             {% if loggeduserpfp %}
-              <img class="pfp" style="margin: 0 auto;" src="/media/{{ pfp.profile_picture }}" alt="{{ theuser.username }}'s profile picture">
+              <img class="pfp" style="margin: 0 auto;" src="/media/{{ pfp }}" alt="{{ theuser.username }}'s profile picture">
             {% else %}
               <img class="pfp" style="margin: 0 auto;" src="{% static 'icons/user.svg' %}" alt="user">
             {% endif %}
@@ -93,7 +93,7 @@
           <div class="post-text" id="post_text{{ post.pk }}">{{ post.post_text }}</div>
 
           {% if post.image %}
-            <img src="{{ post.image.url }}" alt="post-image{{ post.pk }}" width="400" height="400">
+            <img class="img-fluid" src="{{ post.image.url }}" alt="post-image{{ post.pk }}">
           {% endif %}
 
           <div style="text-align: left;">

@@ -10,9 +10,9 @@
 {% block content %}
 <br>
 <div style="margin-left: 0px;" class="userinfo-centered">
-  <div style="margin-bottom: 120px;">
+  <div style="margin-bottom: 140px;">
     {% if pfp %}
-      <img class="pfp" src="/media/{{ pfp.profile_picture }}" alt="{{ theuser.username }}'s profile picture">
+      <img class="pfp" src="/media/{{ pfp }}" alt="{{ theuser.username }}'s profile picture">
     {% else %}
       <img class="pfp" alt="user" src="{% static 'icons/user.svg' %}">
     {% endif %}
