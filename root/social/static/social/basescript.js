@@ -6,7 +6,7 @@ function toggleVisibility(id) {
 		block.style.display = 'block';
 	}
 
-function createPost() {
+function publishPost() {
 	event.preventDefault();
 	var text=$('#post-field').val();
 	var image=$('#id_post_image')[0].files[0];
@@ -16,7 +16,7 @@ function createPost() {
 	data.append('post_text',text)
 	data.append('post_image', image)
 	$.ajax({
-		url: '/ajax/post/',
+		url: '/api/post/',
 		data: data,
 		dataType: 'json',
 		type: 'POST',
@@ -45,7 +45,7 @@ function createPost() {
 <img class="main" src="/static/icons/pencil-alt.svg" onclick="toggleVisibility('edit${post_id}');">
 <img class="main" alt="delete" src="/static/icons/trash-alt.svg" onclick="toggleVisibility('delete${post_id}');">
 
-<span class="changenone" id="delete${post_id}"><strong class="stronger">Delete the post?</strong><button class="coolButton" onclick="deletePost(${post_id})">Yes, delete it.</button></span>
+<span class="changenone" id="delete${post_id}"><strong class="stronger">Delete the post?</strong><button class="btn btn-primary" onclick="deletePost(${post_id})">Yes, delete it.</button></span>
 
 <span class="changenone" id="edit${post_id}">
 <form onsubmit="editPost(${post_id})">
@@ -78,7 +78,7 @@ function createPost() {
 
 function like(post_id) {
 	$.ajax({
-		url: '/ajax/likes/',
+		url: '/api/likes/',
 		data: {
 			post: post_id
 		},
@@ -103,7 +103,7 @@ function like(post_id) {
 
 function dislike(post_id) {
 	$.ajax({
-		url: '/ajax/dislikes/',
+		url: '/api/dislikes/',
 		data: {
 			post: post_id
 		},
@@ -129,7 +129,7 @@ function editPost(post_id) {
 	event.preventDefault();
 	var text=$('#edit-field').val()
 	$.ajax({
-		url: '/ajax/edit/',
+		url: '/api/edit/',
 		data: { csrfmiddlewaretoken: csrf_token, id: post_id, new_text: text },
 		dataType: 'json',
 		type: 'POST',
@@ -151,7 +151,7 @@ function editPost(post_id) {
 
 function deletePost(post_id) {
 	$.ajax({
-		url: '/ajax/delete/',
+		url: '/api/delete/',
 		data: { id: post_id },
 		dataType: 'json',
 		success: function (data) {
@@ -180,7 +180,7 @@ function commentInReply(post_id, comment_id=false) {
 		comment_data['in_reply_to_comment'] = $(`#in_reply_to_comment${comment_id}`).val();
 	}
 	$.ajax({
-		url: '/ajax/comment/',
+		url: '/api/comment/',
 		data: comment_data,
 		dataType: 'json',
 		type: 'POST',
@@ -214,7 +214,7 @@ function commentInReply(post_id, comment_id=false) {
 
 <div class="commentsub"> commented by <a href="/user/${user_id}">${comment_posted_by}</a>${reply}<small><br> Posted on ${post_date}</small></div>
 
-<span class="changenone" id="delete_comment${comment_id}"><strong class="stronger">Delete the comment? </strong><button class="coolButton" onclick="deleteComment(${comment_id})">Yes, delete it.</button></span>
+<span class="changenone" id="delete_comment${comment_id}"><strong class="stronger">Delete the comment? </strong><button class="btn btn-primary" onclick="deleteComment(${comment_id})">Yes, delete it.</button></span>
 
 <span class="changenone" id="edit_comment${comment_id}">
 <form onsubmit="editComment(${comment_id})">
@@ -254,7 +254,7 @@ function editComment(comment_id) {
 	event.preventDefault();
 	var text=$(`#edit_comment${comment_id} #edit-field`).val();
 	$.ajax({
-		url: '/ajax/commentedit/',
+		url: '/api/commentedit/',
 		data: { csrfmiddlewaretoken: csrf_token, id: comment_id, new_text: text },
 		dataType: 'json',
 		type: 'POST',
@@ -273,7 +273,7 @@ function editComment(comment_id) {
 
 function deleteComment(comment_id) {
 	$.ajax({
-		url: '/ajax/commentdelete/',
+		url: '/api/commentdelete/',
 		data: { id: comment_id },
 		dataType: 'json',
 		success: function (data) {
@@ -290,7 +290,7 @@ function deleteComment(comment_id) {
 
 function followUser(user_id) {
 	$.ajax({
-		url: '/ajax/follow/',
+		url: '/api/follow/',
 		data: { id: user_id },
 		dataType: 'json',
 		success: function (data) {
@@ -313,7 +313,7 @@ function bioChange() {
 	var bio = $(`#bio-field`).val();
 	var location = $(`#location-field`).val();
 	$.ajax({
-		url: '/ajax/settings/',
+		url: '/api/settings/',
 		data: { csrfmiddlewaretoken: csrf_token, first_name: firstName, last_name: lastName, bio: bio, location: location },
 		dataType: 'json',
 		type: 'POST',
@@ -334,26 +334,9 @@ function bioChange() {
 	});
 }
 
-
-
-function changeProfilePicture() {
-	$.ajax({
-		url:`/ajax/changepfp`,
-		dataType:'json',
-		type:'GET',
-		success: function (data) {
-			console.log('bruh')
-		}
-	});
-}
-
-
-
-
-
 function addPost (postId) {
 	$.ajax({
-		url:`/ajax/getpostinfo/${postId}`,
+		url:`/api/getpostinfo/${postId}`,
 		dataType:'json',
 		type:'GET',
 		success: function (data) {
@@ -368,7 +351,7 @@ function addPost (postId) {
 				var actions=`<img class="main" src="/static/icons/pencil-alt.svg" onclick="toggleVisibility('edit${post_id}');">
 <img class="main" alt="delete" src="/static/icons/trash-alt.svg" onclick="toggleVisibility('delete${post_id}');">
 
-<span class="changenone" id="delete${post_id}"><strong class="stronger">Delete the post?</strong><button class="coolButton" onclick="deletePost(${post_id})">Yes, delete it.</button></span>
+<span class="changenone" id="delete${post_id}"><strong class="stronger">Delete the post?</strong><button class="btn btn-primary" onclick="deletePost(${post_id})">Yes, delete it.</button></span>
 
 <span class="changenone" id="edit${post_id}">
 <form onsubmit="editPost(${post_id})">
@@ -414,7 +397,7 @@ ${actions}
 
 function addComment(comment_id) {
 	$.ajax({
-		url: `/ajax/getcommentinfo/${comment_id}`,
+		url: `/api/getcommentinfo/${comment_id}`,
 		dataType: 'json',
 		success: function (data) {
 			var post_id=data.post_id;
@@ -429,14 +412,15 @@ function addComment(comment_id) {
 			var in_reply_to_user=data.in_reply_to_user;
 			var in_reply_to_comment=data.in_reply_to_comment
 			if (user_id == request_user_id) {
-				var actions=`<span class="changenone" id="delete_comment${comment_id}"><strong class="stronger">Delete the comment? </strong><button class="coolButton" onclick="deleteComment(${comment_id})">Yes, delete it.</button></span>
-
-<span class="changenone" id="edit_comment${comment_id}">
-<form onsubmit="editComment(${comment_id})">
-New text: <input type="text" placeholder="Edit here" minlength="1" maxlength="2500"  id="edit-field" value="${comment_text}">
-<input type="submit" value="edit">
-</form>
-</span>`
+				var actions=`
+				<span class="changenone" id="delete_comment${comment_id}"><strong class="stronger">Delete the comment? </strong><button class="btn btn-primary" onclick="deleteComment(${comment_id})">Yes, delete it.</button></span>
+				<span class="changenone" id="edit_comment${comment_id}">
+				<form onsubmit="editComment(${comment_id})">
+					New text: <input type="text" placeholder="Edit here" minlength="1" maxlength="2500"  id="edit-field" value="${comment_text}">
+					<input type="submit" value="edit">
+				</form>
+				</span>
+				`
 			}
 			if (in_reply_to_user && in_reply_to_comment) {
 				$(`#comment_in_reply${in_reply_to_comment} #comment-field`).val('');
@@ -486,7 +470,7 @@ ${actions}
 
 function updateView(lastId) {
 	$.ajax({
-		url:`/ajax/databasecheck/${lastId}`,
+		url:`/api/databasecheck/${lastId}`,
 		dataType: 'json',
 		success: function (data) {
 			var postId = data.currentId;
@@ -508,7 +492,7 @@ function updateView(lastId) {
 
 function updateCommentView(lastId) {
 	$.ajax({
-		url:`/ajax/commentdatabasecheck/${lastId}`,
+		url:`/api/commentdatabasecheck/${lastId}`,
 		dataType: 'json',
 		success: function (data) {
 			var commentId = data.currentId;
@@ -524,19 +508,19 @@ function updateCommentView(lastId) {
 	});
 }
 
-
-
-function changeLastId() {
-	$.get("/ajax/databasecheck/0", function(data) {$('#currentpost').text(data.currentId)})
+function sayRandomStuff() {
+	var randomstuff = ["Can't follow yourself", "Why would you follow yourself", "Following yourself is dumb"]
+	$("#followYourself").text(randomstuff[Math.floor(Math.random()*randomstuff.length)])
 }
 
+function changeLastId() {
+	$.get("/api/databasecheck/0", function(data) {$('#currentpost').text(data.currentId)})
+}
 
 
 function changeLastCommentId() {
-	$.get("/ajax/commentdatabasecheck/0", function(data) {$('#currentcomment').text(data.currentId)})
-	console.log('')
+	$.get("/api/commentdatabasecheck/0", function(data) {$('#currentcomment').text(data.currentId)})
 }
-
 
 
 if ($('title').text() == 'Home Home ') { 
@@ -547,4 +531,3 @@ else {
 	var currentComment = null
 	var currentPost = null
 }
-

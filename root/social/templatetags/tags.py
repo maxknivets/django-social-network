@@ -1,27 +1,27 @@
 from django import template
-from social.models import Likes, Dislikes, Followers, Comment
+from social.models import Like, Dislike, Follower, Comment
 
 register = template.Library()
 
 @register.simple_tag
 def total_likes(post):
-    return Likes.objects.filter(liked_post=post).count()
+    return Like.objects.filter(liked_post=post).count()
 
 @register.simple_tag
 def total_dislikes(post):
-    return Dislikes.objects.filter(disliked_post=post).count()
+    return Dislike.objects.filter(disliked_post=post).count()
 
 @register.simple_tag
 def total_followers(user):
-    return Followers.objects.filter(user=user).count()
+    return Follower.objects.filter(user=user).count()
     
 @register.simple_tag
 def total_followed(user):
-    return Followers.objects.filter(is_followed_by=user).count()
+    return Follower.objects.filter(is_followed_by=user).count()
 
 @register.simple_tag
 def already_followed(user, followed_by):
-    following = Followers.objects.filter(user=user, is_followed_by=followed_by)
+    following = Follower.objects.filter(user=user, is_followed_by=followed_by)
     if following:
         return "Unfollow"
     else:

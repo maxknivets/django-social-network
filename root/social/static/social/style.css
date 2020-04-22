@@ -4,70 +4,22 @@ body {
 }
 
 img.pfp {
+    height: 100;
+    width: 100;
+    border-radius: 4%;
     display: block;
-    margin: 0 auto;
 }
 
-
-div.userinfo {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 1px;
-    box-sizing: border-box;
-    border-radius: 4px;
-    display: flex;
-    overflow-wrap: break-word;
-    word-break: break-all;
-}
-
-div.credentials {
-    margin-left: 10px;
-}
-
-div.username {
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
-div.names {
-    font-size: 0.9em;
-}
-
-.join-date {
-    font-size: 0.5em;
-}
-
-div.bio {
-    font-size: 1.1em;
-    font-style: italic;
-}
-
-
-.sidebar {
-    margin: -21px 5px 5px -12px;
-    padding: 0;
+.left-sidebar {
     width: 15%;
     background-color:white;
     position: fixed;
     height: 100%;
     border-right: 1.5px solid #44494a;
+    text-align: center !important;
 }
 
-div.content {
-    height: 1000px;
-    word-wrap: break-word;
-    text-align: center;
-}
-
-div.second-content {
-    height: 1000px;
-    word-wrap: break-word;
-    text-align: left;
-}
-
-.second-sidebar {
+.right-sidebar {
     margin: 0px;
     width: 15%;
     position: fixed;
@@ -79,22 +31,35 @@ div.second-content {
     border-left: 1.5px solid #44494a;
 }
 
-@media screen and (max-width: 920px) {
-    .sidebar {
+div.content {
+    height: 1000px;
+    word-wrap: break-word;
+    text-align: center;
+    padding: 5px;
+}
+
+div.second-content {
+    height: 1000px;
+    word-wrap: break-word;
+    text-align: center !important;
+}
+
+@media screen and (max-width: 800px) {
+    .left-sidebar {
         visibility: hidden;
     }
-    .second-sidebar {
+    .right-sidebar {
         visibility: hidden;
     }
     .sidebar a {float: left;}
-    div.content {margin-left: 0;}
+    div.content {margin-left: 0;}    
 }
 
 .center{
     margin: 0 auto;
     text-align: center;
 }
-.centerhome {
+.homecenter {
     margin: 0 auto;
     text-align: center;
     display: flex;
@@ -102,8 +67,12 @@ div.second-content {
     justify-content: center;
 }
 
-div.bottom-border {
-    border-bottom: 2px solid steelblue;
+.userinfo-centered {
+    margin: 0 auto;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 ul {
@@ -111,7 +80,6 @@ ul {
 }
 
 li.post {
-    border-left: steelblue 2px solid;
     padding: 30px 10px;
     margin-bottom: 50px;
 }
@@ -124,33 +92,13 @@ li.comment {
 
 li.inreply {
     border-left: blue 2px solid;
-    margin: 20px 0px;
     margin-left: 35px;
     padding: 45px;
 }
 
-label {
-    font-size: 22px;
-}
-
-a {
-    padding: 0px 2px 0px 1px;
-    text-decoration: none;
-}
-
-strong.stronger {
-    font-size: 30px;
-}
-
-img {
-    border: 1.5px solid black;
-    border-radius: 5px;
-    margin: 0;
-}
-
 img.main {
-    width: 40px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
 }
 
 img.reply {
@@ -160,19 +108,10 @@ img.reply {
 
 span.none {
     display: none;
-    word-wrap: break-word;
-    align-items: center;
 }
 
 span.changenone {
-    padding: 10px 20px;
     display: none;
-    word-wrap: break-word;
-}
-
-span.extrapadding {
-    padding: 10px 20px;
-    display: block;
 }
 
 span.center {
@@ -181,122 +120,37 @@ span.center {
     display: block;
 }
 
-div.comment {
-    display:inline;
-    color: #0C1617;
-    font-size: 35px;
-    padding: 20px 20px;
-}
-
-div.commentsub {
-    color: green;
-    font-size: 20px;
-    padding: 0px 0px 0px 20px;
-    display: block;
-}
-
-div.reply {
-    display: inline;
-    color: #0C1617;
-    font-size: 30px;
-    padding: 0px 15px 0px 0px; 
-}
-
-div.replysub {
-    color: green;
-    font-size: 20px;
-}
-    
-div.main {
+div.post-text {
     color: #141214;
     font-size: 40px;
-    display: topmiddle;
-    margin-right: 400px;
-    padding: 20px 20px;
+    text-align: left;
 }
 
-div.sub {
-    color: green;
+div.post-date {
+    color: lightgreen;
     font-size: 22px;
-    padding: 10px 20px 0px;
-    display: block;
 }
 
-div.user {
+div.post-username {
     color: #141214;
-    font-size: 35px;
     text-align: center;
 }
 
-div.like {
-    color: dodgerblue;
-    font-size: 68px;
-    font-weight: bold;
-    display: inline;
+.post-input {
+    height: 145px;
+    font-size: 20px;
 }
 
-div.dislike {
-    color: #E23D28;
-    font-size: 68px;
-    font-weight: bold;
-    display: inline;
+.comment-input {
+    font-size: 20px !important;
 }
 
-textarea.postinput {
-    resize: none;
-    height: 120px;
-    width: 500px;
+textarea {
+    resize: none !important;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 25px;
     padding-right: 25px;
-    border: 4px solid #ccc;
+    border: 1.5px solid #ccc;
     border-radius: 4px;
-    font-size: 18px;
 }
-
-input[type=submit] {
-    padding: 14px 20px;
-    margin: 8px 0;
-	background-color: #72b352;
-	-moz-border-radius:4px;
-	-webkit-border-radius:4px;
-	border-radius:4px;
-	border:1px solid #4b8f29;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-size:18px;
-	font-weight:bold;
-	padding:5px 14px;
-	text-decoration:none;
-}
-
-input[type=submit]:hover {
-    background-color: #45a049;
-}
-
-.coolButton {
-	background-color: #72b352;
-	-moz-border-radius:4px;
-	-webkit-border-radius:4px;
-	border-radius:4px;
-	border:1px solid #4b8f29;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-size:18px;
-	font-weight:bold;
-	padding:5px 14px;
-	text-decoration:none;
-}
-
-.coolButton:hover {
-	background-color:#45a049;
-}
-
-.coolButton:active {
-	position:relative;
-	top:1px;
-}
-

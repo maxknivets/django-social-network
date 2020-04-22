@@ -1,12 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
-from social.forms import SignUpForm
+from social.forms import Sign_up_form
 from django.shortcuts import render, redirect
 
 def signup(request):
     if request.user.is_authenticated:
         return redirect('/')
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
+        form = Sign_up_form(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -15,14 +15,13 @@ def signup(request):
             login(request, user)
             return redirect('/')
     else:
-        form = SignUpForm()
+        form = Sign_up_form()
     return render(request, 'registration/signup.html', {'form': form})
 
 def logout(request):
     logout(request)
     return redirect('/login')
 
-# ajax endpoint
 def validate_username(request):
     username = request.GET.get('username', None)
     data = {

@@ -2,13 +2,12 @@ from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from django.utils import timezone
 from django.utils.html import escape
-from social.models import User, Likes, Dislikes, Comment, Post
-from social.forms import EditForm, DeleteForm, CommentForm
-
+from social.models import User, Like, Dislike, Comment, Post
+from social.forms import Edit_form, Delete_form, Comment_form
 
 def comment(request):
     if request.user.is_authenticated and request.method == 'POST':
-        form = CommentForm(request.POST)
+        form = Comment_form(request.POST)
         if form.is_valid():
             post_id = form.cleaned_data.get('id')
             post = get_object_or_404(Post, pk=post_id)
@@ -42,10 +41,9 @@ def comment(request):
             return JsonResponse(data)
     return redirect('/')
 
-
 def commentedit(request):
     if request.user.is_authenticated and request.method == 'POST':
-        form = EditForm(request.POST)
+        form = Edit_form(request.POST)
         if form.is_valid():
             comment_id = form.cleaned_data.get('id')
             comment = get_object_or_404(Comment, pk=comment_id)
@@ -57,8 +55,6 @@ def commentedit(request):
                 return JsonResponse(data)
     return redirect('/')
 
-
-
 def commentdelete(request):
     if request.user.is_authenticated:
         comment_id = request.GET.get('id')
@@ -68,7 +64,6 @@ def commentdelete(request):
             data = { 'comment_id': comment_id }
             return JsonResponse(data)
     return redirect('/')
-
 
 def getcommentinfo(request, comment_id):
     if request.user.is_authenticated:
@@ -91,12 +86,8 @@ def getcommentinfo(request, comment_id):
         return JsonResponse(data)
     return redirect('/')
             
-
 def commentdatabasecheck(request, comment_id):
     if request.user.is_authenticated:
         data={'currentId':Comment.objects.last().pk, 'lastId':comment_id}
         return JsonResponse(data)
     return redirect('/')
-
-
-

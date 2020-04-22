@@ -1,25 +1,16 @@
-<head>
-  <title>Home</title>
-  {% extends 'social/base.html' %}
-  {% load staticfiles %}
-  {% load tags %}
-
-
-</head>
+{% extends 'social/base.html' %}
+{% load staticfiles %}
+{% load tags %}
 {% block content %}
 
-<div style="border-bottom: #0C1617 solid 1px" class="center">
-  <h1>Home</h1>
-  <form id="post_form" method="post" onsubmit="createPost()">
+<h1 class="center">Home</h1>
+<div class="homecenter">
+  <form method="post" onsubmit="publishPost()">
     {{ postform.post_text }}
-    <div class="centerhome">
-      <label for="id_post_image">attach image:</label> {{ postform.post_image }}
-      <input type="submit" value="post">
+    <div>
+      {{ postform.post_image }}
+      <button class="form-control btn btn-primary" type="submit">post</button>
     </div>
   </form>
 </div>
-<div class="center">
-  <h1>Recent posts</h1>
-</div>
 {% endblock %}
-
