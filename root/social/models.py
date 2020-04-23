@@ -63,7 +63,7 @@ class Comment(models.Model):
     in_reply_to_user = models.IntegerField(blank=True, null=True)
     
     def get_readable_date(self):
-        return self.post_date.strftime("%l:%M%p on %B %d, %Y")
+        return self.post_date.strftime("%B %d, %Y")
     
     def get_comment(self):
         return Comment.objects.filter(pk=self.in_reply_to_comment).first()

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from social.models import Post#, Follower
+from social.models import Post, Profile#, Follower
 from social.forms import Post_form, Edit_form, Delete_form, Comment_form
 
 def index(request):
@@ -12,8 +12,10 @@ def index(request):
         'latest_post':last_post,
         'postform':Post_form(),
         'editform':Edit_form(),
-        'commentform':Comment_form()
+        'commentform':Comment_form(),
+        'loggeduserpfp':Profile.objects.filter(user=request.user).first().profile_picture,
         })
+        pdb.set_trace()
     return redirect('/login')
 
 #        personal_feed = []

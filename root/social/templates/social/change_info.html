@@ -25,8 +25,16 @@
         </div>
         <form method="POST">
           {% csrf_token %}
-          {{ change_profile_info_form.as_p }}
-          <button class="btn btn-primary" type="submit">change</button>
+          <div>First name:</div>
+          {{ change_profile_info_form.first_name }}
+          <div>Last name:</div>
+          {{ change_profile_info_form.last_name }}
+          <div>Bio:</div>
+          {{ change_profile_info_form.bio }}
+          <div>Location:</div>
+          {{ change_profile_info_form.location }}
+          <br>
+          <button class="btn btn-primary btn-lg my-3" type="submit">change</button>
         </form>
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}

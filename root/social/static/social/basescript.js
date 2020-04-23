@@ -76,7 +76,7 @@ function publishPost() {
 
 function like(post_id) {
 	$.ajax({
-		url: '/api/likes/',
+		url: '/api/like/',
 		data: {
 			post: post_id
 		},
@@ -99,7 +99,7 @@ function like(post_id) {
 
 function dislike(post_id) {
 	$.ajax({
-		url: '/api/dislikes/',
+		url: '/api/dislike/',
 		data: {
 			post: post_id
 		},
@@ -107,7 +107,7 @@ function dislike(post_id) {
 		success: function (data) {
 			if(data){
 				$(`#total_likes${post_id}`).text(data.total_likes);
-				$(`#total_dislikes${post_id}`).text(data.total_dislikes);
+ 				$(`#total_dislikes${post_id}`).text(data.total_dislikes);
 			}
 		},
 		error:function (xhr, ajaxOptions, thrownError){

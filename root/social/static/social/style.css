@@ -3,13 +3,6 @@ body {
     color: #1b1919;
 }
 
-img.pfp {
-    height: 100;
-    width: 100;
-    border-radius: 4%;
-    display: block;
-}
-
 .left-sidebar {
     width: 15%;
     background-color:white;
@@ -31,17 +24,11 @@ img.pfp {
     border-left: 1.5px solid #44494a;
 }
 
-div.content {
+.content {
     height: 1000px;
     word-wrap: break-word;
     text-align: center;
-    padding: 5px;
-}
-
-div.second-content {
-    height: 1000px;
-    word-wrap: break-word;
-    text-align: center !important;
+    padding: 10px;
 }
 
 @media screen and (max-width: 800px) {
@@ -59,6 +46,7 @@ div.second-content {
     margin: 0 auto;
     text-align: center;
 }
+
 .homecenter {
     margin: 0 auto;
     text-align: center;
@@ -80,77 +68,74 @@ ul {
 }
 
 li.post {
-    padding: 30px 10px;
-    margin-bottom: 50px;
+    width: 64.35%;
+    margin-left: 16.35%;
+    padding: 10px 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-li.comment {
-    border-left: steelblue 2px solid;
-    padding: 40px 20px;
-    margin-left: 15px;
+.comment-text {
+    color: #141214;
+        text-align: left;
 }
 
-li.inreply {
-    border-left: blue 2px solid;
-    margin-left: 35px;
-    padding: 45px;
+.comment {
+    border-left: #0069d9 2px solid;
 }
 
-img.main {
+.inreply {
+    margin-left: 30px;
+    border-left: #1a1ad9 2px solid;
+}
+
+img.icon {
     width: 20px;
     height: 20px;
 }
 
-img.reply {
-    width: 20px;
-    height: 20px;
-}
-
-span.none {
-    display: none;
-}
-
-span.changenone {
-    display: none;
-}
-
-span.center {
-	text-align: center;
-	font-size: 2.5em;
+img.pfp {
+    height: 100;
+    width: 100;
+    border-radius: 4%;
     display: block;
 }
 
-div.post-text {
+.none {
+    display: none;
+}
+
+.center {
+	text-align: center;
+    display: block;
+}
+
+.post-text {
+    word-wrap: break-word;
+    font-size: 20px;
     color: #141214;
-    font-size: 40px;
     text-align: left;
 }
 
-div.post-date {
-    color: lightgreen;
-    font-size: 22px;
+.post-header {
+    text-align: left;
 }
 
-div.post-username {
-    color: #141214;
-    text-align: center;
+.post-date {
+    color: rgb(71, 76, 71);
+}
+
+.post-username {
+    text-align: left;
 }
 
 .post-input {
-    height: 145px;
-    font-size: 20px;
-}
-
-.comment-input {
-    font-size: 20px !important;
+    height: 100px;
 }
 
 textarea {
     resize: none !important;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding: 10px 25px;
     border: 1.5px solid #ccc;
     border-radius: 4px;
 }

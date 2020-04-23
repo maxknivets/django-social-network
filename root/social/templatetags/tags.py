@@ -12,6 +12,10 @@ def total_dislikes(post):
     return Dislike.objects.filter(disliked_post=post).count()
 
 @register.simple_tag
+def total_comments(post):
+    return Comment.objects.filter(post=post).count()
+
+@register.simple_tag
 def total_followers(user):
     return Follower.objects.filter(user=user).count()
     

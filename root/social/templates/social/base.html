@@ -23,7 +23,7 @@
           <br>
           <div>
             {% if loggeduserpfp %}
-              <img class="pfp" style="margin: 0 auto;" src="/media/{{ pfp }}" alt="{{ theuser.username }}'s profile picture">
+              <img class="pfp" style="margin: 0 auto;" src="/media/{{ loggeduserpfp }}" alt="{{ theuser.username }}'s profile picture">
             {% else %}
               <img class="pfp" style="margin: 0 auto;" src="{% static 'icons/user.svg' %}" alt="user">
             {% endif %}
@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="right-sidebar">
-        <div class="second-content">
+        <div class="content">
           <br>
           <button class="btn btn-primary btn-sm">#POLITICS</button>
           <button class="btn btn-primary btn-sm">#GAMES</button>
@@ -62,91 +62,71 @@
           <button class="btn btn-primary btn-sm">#HOME</button>
         </div>
       </div>
-          
+
       {% block content %}
       {% endblock %}
-    <!-- beginning of posts list -->
+    <!-- Beginning of posts list -->
     <div class="center" style="border-top: #0C1617 solid 1px;">
       <ul id="posts">
         <div style="display:none;" id="currentpost">{{ latest_post.pk }}</div>
-        
+
         {% for post in latest_posts_list %}
-        <li class="post" id="post{{ post.pk }}" style="border-bottom: 1px steelblue solid; width: 65.5%; margin-left:15%">
-          <div style="text-align: left; font-size: 25px">
-            <a href="{% url 'social:user' post.user.pk %}"><span>{{ post.user.username }}</span></a> 
-            <span style="color: rgb(71, 76, 71)">{{ post.get_readable_date }}</span>
+        <li class="post" id="post{{ post.pk }}">
+
+          <!-- Post text and image -->
+          <p class="post-text" id="post_text{{ post.pk }}">{{ post.post_text }}</p>
+          {% if post.image %}
+            <img class="img-fluid" src="{{ post.image.url }}" alt="post-image-{{ post.pk }}">
+          {% endif %}
+
+          <!-- Post header -->
+          <div class="post-header">
+            <a href="{% url 'social:user' post.user.pk %}">{{ post.user.username }}</a> 
+            <span class="post-date">{{ post.get_readable_date }}</span>
+
+            <img class="icon" alt="reply" src="{% static 'icons/arrow-down.svg' %}" onclick="toggleVisibility('comment_in_reply{{ post.pk }}');">
             {% if post.user == user %}
-            <img class="main" src="{% static 'icons/pencil-alt.svg' %}" onclick="toggleVisibility('edit{{ post.pk }}');">
-            <img class="main" alt="delete" src="{% static 'icons/trash-alt.svg' %}" onclick="toggleVisibility('delete{{ post.pk }}');">            <span class="changenone" id="delete{{ post.pk }}">Delete the post?<button class="btn btn-primary" onclick="deletePost({{ post.pk }})">Yes, delete it.</button></span>
+            <img class="icon" src="{% static 'icons/pencil-alt.svg' %}" onclick="toggleVisibility('edit{{ post.pk }}');">
+            <img class="icon" alt="delete" src="{% static 'icons/trash-alt.svg' %}" onclick="toggleVisibility('delete{{ post.pk }}');">
 
-
-            <span class="changenone" id="edit{{ post.pk }}">
+            <!-- Options -->
+            <span class="none my-2" id="edit{{ post.pk }}">
               <form onsubmit="editPost('{{ post.pk }}')">
-                <label for="edit-field">New text:</label>
-                <input type="text" name="new_text" placeholder="Edit here" id="edit-field" maxlength="2500" minlength="1" value="{{ post.post_text }}" required="">
+                <input type="text" name="new_text" placeholder="Edit your post" id="edit-field" maxlength="200" minlength="1" value="{{ post.post_text }}" required="">
                 {{ editform.id.as_hidden }}
                 <button class="btn btn-primary" type="submit">Edit</button>
               </form>
             </span>
-          {% endif %}
-          </div>
-          <div class="post-text" id="post_text{{ post.pk }}">{{ post.post_text }}</div>
+            <span class="none my-2" id="delete{{ post.pk }}">Delete the post?<button class="btn btn-danger" onclick="deletePost({{ post.pk }})">Yes, delete it.</button></span>
 
-          {% if post.image %}
-            <img class="img-fluid" src="{{ post.image.url }}" alt="post-image{{ post.pk }}">
-          {% endif %}
+            {% endif %}
+            <!-- Likes, dislikes and comments -->
+            <span style="text-align: left;">
+              <button class="btn btn-outline-success btn-sm" onclick="like({{ post.pk }})">
+                <img class="icon" src="{% static 'icons/thumbs-up.svg' %}">
+                <span id="total_likes{{ post.pk }}">{% total_likes post %}</span>
+              </button>
+              <button class="btn btn-outline-secondary btn-sm" onclick="dislike({{ post.pk }})">
+                <img class="icon" src="{% static 'icons/thumbs-down.svg' %}">
+                <span id="total_dislikes{{ post.pk }}">{% total_dislikes post %}</span>
+              </button>
+            </span>
 
-          <div style="text-align: left;">
-            <img class="main" alt="like" src="{% static 'icons/thumbs-up.svg' %}" onclick="like({{ post.pk }})">
-            <img class="main" alt="dislike" src="{% static 'icons/thumbs-down.svg' %}" onclick="dislike({{ post.pk }}">
-            <br>
-            <span id="total_likes{{ post.pk }}">{% total_likes post %}</span>/<span id="total_dislikes{{ post.pk }}">{% total_dislikes post %}</span>
+            <a class="btn btn-outline-primary btn-sm" href="/post/{{post.pk}}/" role="button">
+              <img class="icon" alt="comments" src="{% static 'icons/comment.svg' %}">
+              {% total_comments post %}
+            </a>
           </div>
-          <span id="comment_in_reply{{ post.pk }}">
+
+          <!-- Hidden comment form -->
+          <span class="none" id="comment_in_reply{{ post.pk }}">
             <form onsubmit="commentInReply({{ post.pk }})">
               {{ commentform }}
-              <button class="btn btn-primary" type="submit">Comment</button>
+              <button class="btn btn-primary btn-block" type="submit">Comment</button>
             </form>
           </span>
-
-
-          <ul id="comment_section{{ post.pk }}">
-            <div style="display:none;" id="currentcomment">{{ post.comment_set.all.last.pk }}</div>
-            {% for comment in post.comment_set.all %}
-
-            <li class="{% if comment.in_reply_to_comment %}inreply{% else %}comment{% endif %}" id="comment{{ comment.pk }}"><div class="comment" id="comment_text{{ comment.pk }}">{{ comment }}</div><img class="reply" alt="down" src="{% static 'icons/arrow-down.svg' %}" onclick="toggleVisibility('comment_in_reply{{ comment.pk }}');">
-            
-            {% if comment.posted_by == user %}
-            <img class="reply" alt="delete" src="{% static 'icons/trash-alt.svg' %}" onclick="toggleVisibility('delete_comment{{ comment.pk }}');">
-            <img class="reply" src="{% static 'icons/pencil-alt.svg' %}" onclick="toggleVisibility('edit_comment{{ comment.pk }}');">
-            
-            <span class="changenone" id="delete_comment{{ comment.pk }}"><strong class="stronger">Delete the comment? </strong><button class="btn btn-primary" onclick="deleteComment({{ comment.pk }})">Yes, delete it.</button></span>
-            
-            <span class="changenone" id="edit_comment{{ comment.pk }}">
-              <form onsubmit="editComment({{ comment.pk }})">
-                <label for="edit-field">New text:</label>
-                <input type="text" name="new_text" placeholder="Edit here" id="edit-field" maxlength="2500" minlength="1" value="{{ comment }}" required="">
-                {{ editform.id.as_hidden }}
-                <button class="btn btn-primary" type="submit"></button>
-              </form>
-            </span>
-
-            {% endif %}          
-
-            <span class="changenone" id="comment_in_reply{{ comment.pk }}">
-              <form onsubmit="commentInReply({{ post.pk }}, {{ comment.pk }})">
-                {{ commentform }}
-                <input type="hidden" id="in_reply_to_user{{ comment.pk }}" value="{{ comment.posted_by.pk }}">
-                <input type="hidden" id="in_reply_to_comment{{ comment.pk }}" value="{{ comment.pk }}">
-                <button class="btn btn-primary" type="submit"></button>
-              </form>
-            </span>
-
-            <div class="commentsub"> commented by <a href="{% url 'social:user' comment.posted_by.pk %}">{{ comment.posted_by }}</a>{% if comment.in_reply_to_comment %} in reply to <a href="{% url 'social:user' comment.in_reply_to_user %}">{{ comment.get_user }}</a>'s <a href="{% url 'social:showcomment' comment.in_reply_to_comment %}">comment</a> {% endif %}<br><small>Posted at  {{ comment.get_readable_date }}</small></div>
-            </li>
-            {% endfor %} <!-- end of the comment list -->
-          </ul>
-
+          </li>
+          <div style="border-bottom: 1px #0069d9 solid;"></div>
         {% endfor %} <!-- end of the post list -->
         
         </ul>

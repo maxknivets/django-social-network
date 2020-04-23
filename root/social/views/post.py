@@ -50,7 +50,13 @@ def getpostinfo(request, post_id):
         	data['post_image'] = post.image.url
         return JsonResponse(data)
     return redirect('/')
-            
+
+def view_post(request, post_id):
+    if request.user.is_authenticated:
+        post = get_object_or_404(Post, pk=post_id)
+        return render(request, 'social/single_post.html',{'post':post, 'replies':replies, 'post':comment.post, 'editform':Edit_form(), 'commentform':Comment_form()})
+    return redirect('/')
+
 def edit(request):
     if request.user.is_authenticated and request.method == 'POST':
         form = Edit_form(request.POST)
@@ -85,7 +91,7 @@ def like(request):
             if already_disliked:
                 already_disliked.delete()
             like = Like(liked_post=post, liked_by=request.user)
-            Like.save()
+            like.save()
         else:
             already_liked.delete()
         data = {
@@ -94,7 +100,7 @@ def like(request):
         }
         return JsonResponse(data)
     return redirect('/')
-    
+
 def dislike(request):
     if request.user.is_authenticated:
         disliked_post_id = request.GET.get('post', None)

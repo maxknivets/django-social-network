@@ -14,7 +14,8 @@ urlpatterns = [
     path('user/<int:user_id>/', views.user, name='user'),
     path('following/<int:user_id>/', views.following, name='following'),
     path('followers/<int:user_id>/', views.followers, name='followers'),
-    path('<int:comment_id>/showcomment/', views.showcomment, name='showcomment'),
+    path('<int:comment_id>/showcomment/', views.showcomment, name='view_comment'),
+    path('post/<int:post_id>/', views.view_post, name='view_post'),
     path('settings/', views.changeinfo, name='changeinfo'),
     path('', views.index, name='index'),
 

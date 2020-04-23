@@ -13,8 +13,8 @@ def changeinfo(request):
             form = Change_profile_info_form(request.POST)
             profile_picture_form = Profile_picture_form(request.POST, request.FILES)
             if profile_picture_form.is_valid():
+                changes_saved = True
                 profile.profile_picture = profile_picture_form.cleaned_data['profile_picture']
-                pdb.set_trace()
                 profile.save()
             elif form.is_valid():
                 changes_saved = True
