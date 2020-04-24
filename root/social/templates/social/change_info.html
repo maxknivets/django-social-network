@@ -23,7 +23,7 @@
           <h1 class="center alert alert-warning">Something went wrong</h1>
           {% endif %}
         </div>
-        <form method="POST">
+        <form>
           {% csrf_token %}
           <div>First name:</div>
           {{ change_profile_info_form.first_name }}
@@ -36,10 +36,9 @@
           <br>
           <button class="btn btn-primary btn-lg my-3" type="submit">change</button>
         </form>
-        <form method="POST" enctype="multipart/form-data">
+        <form>
           {% csrf_token %}
           {{ profile_picture_form.as_p }}
-          <img id="blah" src="#" alt="your image" />
           <button class="btn btn-primary" type="submit">change image</button>  
         </form>
         <a class="btn btn-primary" href="/user/{{ logged_user }}/" role="button">go back</a>

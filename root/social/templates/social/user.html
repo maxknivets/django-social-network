@@ -2,7 +2,6 @@
 <head>
   {% load static %}
   {% load tags %}
-  {% block stylesheet %}{% endblock %}
 <script src="{% static 'social/basescript.js' %}"></script>
 
 {% block title %} {{ theuser.username }}'s profile {% endblock %}
@@ -45,4 +44,8 @@
     <br>
   </div>
 </div>
+<div class="border-bottom border-dark"></div>
+
+{% include './posts_list.html' %}
+
 {% endblock %}

@@ -36,13 +36,13 @@
           <div>
             <div>
               <br>
-              <a class="btn btn-primary btn-block" href="/" role="button">home</a>
+              <a class="btn btn-primary btn-block" href="/" role="button">Home</a>
               <br>
               <a class="btn btn-primary btn-block" href="/user/{{ user.pk }}" role="button">Your profile</a>
               <br>
-              <a class="btn btn-primary btn-block" href="/settings" role="button">settings</a>
+              <a class="btn btn-primary btn-block" href="/settings" role="button">Settings</a>
               <br>
-              <a class="btn btn-primary btn-block" href="/logout" role="button">log out</a>
+              <a class="btn btn-primary btn-block" href="/logout" role="button">Log out</a>
             </div>
           </div>
         </div>
@@ -65,73 +65,7 @@
 
       {% block content %}
       {% endblock %}
-    <!-- Beginning of posts list -->
-    <div class="center" style="border-top: #0C1617 solid 1px;">
-      <ul id="posts">
-        <div style="display:none;" id="currentpost">{{ latest_post.pk }}</div>
-
-        {% for post in latest_posts_list %}
-        <li class="post" id="post{{ post.pk }}">
-
-          <!-- Post text and image -->
-          <p class="post-text" id="post_text{{ post.pk }}">{{ post.post_text }}</p>
-          {% if post.image %}
-            <img class="img-fluid" src="{{ post.image.url }}" alt="post-image-{{ post.pk }}">
-          {% endif %}
-
-          <!-- Post header -->
-          <div class="post-header">
-            <a href="{% url 'social:user' post.user.pk %}">{{ post.user.username }}</a> 
-            <span class="post-date">{{ post.get_readable_date }}</span>
-
-            <img class="icon" alt="reply" src="{% static 'icons/arrow-down.svg' %}" onclick="toggleVisibility('comment_in_reply{{ post.pk }}');">
-            {% if post.user == user %}
-            <img class="icon" src="{% static 'icons/pencil-alt.svg' %}" onclick="toggleVisibility('edit{{ post.pk }}');">
-            <img class="icon" alt="delete" src="{% static 'icons/trash-alt.svg' %}" onclick="toggleVisibility('delete{{ post.pk }}');">
-
-            <!-- Options -->
-            <span class="none my-2" id="edit{{ post.pk }}">
-              <form onsubmit="editPost('{{ post.pk }}')">
-                <input type="text" name="new_text" placeholder="Edit your post" id="edit-field" maxlength="200" minlength="1" value="{{ post.post_text }}" required="">
-                {{ editform.id.as_hidden }}
-                <button class="btn btn-primary" type="submit">Edit</button>
-              </form>
-            </span>
-            <span class="none my-2" id="delete{{ post.pk }}">Delete the post?<button class="btn btn-danger" onclick="deletePost({{ post.pk }})">Yes, delete it.</button></span>
-
-            {% endif %}
-            <!-- Likes, dislikes and comments -->
-            <span style="text-align: left;">
-              <button class="btn btn-outline-success btn-sm" onclick="like({{ post.pk }})">
-                <img class="icon" src="{% static 'icons/thumbs-up.svg' %}">
-                <span id="total_likes{{ post.pk }}">{% total_likes post %}</span>
-              </button>
-              <button class="btn btn-outline-secondary btn-sm" onclick="dislike({{ post.pk }})">
-                <img class="icon" src="{% static 'icons/thumbs-down.svg' %}">
-                <span id="total_dislikes{{ post.pk }}">{% total_dislikes post %}</span>
-              </button>
-            </span>
-
-            <a class="btn btn-outline-primary btn-sm" href="/post/{{post.pk}}/" role="button">
-              <img class="icon" alt="comments" src="{% static 'icons/comment.svg' %}">
-              {% total_comments post %}
-            </a>
-          </div>
-
-          <!-- Hidden comment form -->
-          <span class="none" id="comment_in_reply{{ post.pk }}">
-            <form onsubmit="commentInReply({{ post.pk }})">
-              {{ commentform }}
-              <button class="btn btn-primary btn-block" type="submit">Comment</button>
-            </form>
-          </span>
-          </li>
-          <div style="border-bottom: 1px #0069d9 solid;"></div>
-        {% endfor %} <!-- end of the post list -->
-        
-        </ul>
-      </div>
     </main>
   </body>
-<script src="{% static 'social/basescript.js' %}"></script>
+  <script src="{% static 'social/basescript.js' %}"></script>
 </html>

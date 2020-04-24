@@ -3,11 +3,8 @@ body {
 	color: rgb(27, 25, 25)
 }
 
-span.centered {
-	text-align: center;
-	font-size: 1em;
-	display: block;
-	margin: 2em;
+span.center {
+    text-align: center;
 }
 
 div.titlebold {
@@ -19,6 +16,11 @@ div.titlebold {
 .helptext {
 	font-size: 0.9em;
 	display: block;
+}
+
+.loginbox {
+	width: 30%;
+	height: 5%;
 }
 
 ul {

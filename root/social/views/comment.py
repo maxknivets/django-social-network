@@ -85,7 +85,14 @@ def getcommentinfo(request, comment_id):
         data['date']=comment.get_readable_date()
         return JsonResponse(data)
     return redirect('/')
-            
+
+def view_comment(request, comment_id):
+    if request.user.is_authenticated:
+        comment = get_object_or_404(Comment, pk=comment_id)
+        replies = Comment.objects.filter(in_reply_to_comment=comment_id)
+        return render(request, 'social/singlecomment.html',{'comment':comment, 'post':comment.post, 'editform':Edit_form(), 'commentform':Comment_form()})
+    return redirect('/')
+
 def commentdatabasecheck(request, comment_id):
     if request.user.is_authenticated:
         data={'currentId':Comment.objects.last().pk, 'lastId':comment_id}

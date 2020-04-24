@@ -165,10 +165,11 @@ function commentInReply(post_id, comment_id=false) {
 	var text=$(`#comment_in_reply${post_id} #comment-field`).val()
 	comment_data={ 'csrfmiddlewaretoken': csrf_token, 'id': post_id, 'comment': text, 'in_reply_to_user': 0, 'in_reply_to_comment': 0 }
 	if (comment_id) {
-		comment_data['comment'] = $(`#comment_in_reply${comment_id} #comment-field`).val();
+		comment_data['comment'] = $(`#comment_in_reply-${post_id}-${comment_id} #comment-field`).val();
 		comment_data['in_reply_to_user'] = $(`#in_reply_to_user${comment_id}`).val();
 		comment_data['in_reply_to_comment'] = $(`#in_reply_to_comment${comment_id}`).val();
 	}
+	console.log(comment_data)
 	$.ajax({
 		url: '/api/comment/',
 		data: comment_data,
@@ -188,7 +189,7 @@ function commentInReply(post_id, comment_id=false) {
 			if (in_reply_to_user && in_reply_to_comment) {
 				$(`#comment_in_reply${in_reply_to_comment} #comment-field`).val('');
 				var get_username=data.get_username;
-				var reply=`in reply to <a href="/user/${in_reply_to_user}">${get_username}</a>\'s <a href="/${in_reply_to_comment}/showcomment">comment</a>`;
+				var reply=`in reply to <a href="/user/${in_reply_to_user}">${get_username}</a>\'s <a href="/${in_reply_to_comment}/view_comment">comment</a>`;
 				var comment_type='inreply';
 			}
 			else {
@@ -375,7 +376,7 @@ function addComment(comment_id) {
 			if (in_reply_to_user && in_reply_to_comment) {
 				$(`#comment_in_reply${in_reply_to_comment} #comment-field`).val('');
 				var get_username=data.get_username;
-				var reply=`in reply to <a href="/user/${in_reply_to_user}">${get_username}</a>\'s <a href="/${in_reply_to_comment}/showcomment">comment</a>`;
+				var reply=`in reply to <a href="/user/${in_reply_to_user}">${get_username}</a>\'s <a href="/${in_reply_to_comment}/view_comment">comment</a>`;
 				var comment_type='inreply';
 			}
 			else {

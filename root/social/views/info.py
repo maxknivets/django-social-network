@@ -58,10 +58,3 @@ def user(request, user_id):
         'commentform':Comment_form()
         })
     return redirect('/')
-
-def showcomment(request, comment_id):
-    if request.user.is_authenticated:
-        comment = get_object_or_404(Comment, pk=comment_id)
-        replies = Comment.objects.filter(in_reply_to_comment=comment_id)
-        return render(request, 'social/singlecomment.html',{'comment':comment, 'replies':replies, 'post':comment.post, 'editform':Edit_form(), 'commentform':Comment_form()})
-    return redirect('/')

@@ -1,9 +1,9 @@
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.utils import timezone
 from django.utils.html import escape
 from social.models import User, Post, Like, Dislike
-from social.forms import Post_form, Edit_form, Delete_form
+from social.forms import Post_form, Edit_form, Delete_form, Comment_form
 
 def post(request):
     if request.user.is_authenticated and request.method == 'POST':
@@ -54,7 +54,7 @@ def getpostinfo(request, post_id):
 def view_post(request, post_id):
     if request.user.is_authenticated:
         post = get_object_or_404(Post, pk=post_id)
-        return render(request, 'social/single_post.html',{'post':post, 'replies':replies, 'post':comment.post, 'editform':Edit_form(), 'commentform':Comment_form()})
+        return render(request, 'social/single_post.html',{'post':post, 'editform':Edit_form(), 'commentform':Comment_form()})
     return redirect('/')
 
 def edit(request):

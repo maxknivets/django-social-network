@@ -1,0 +1,77 @@
+<head>
+    {% load static %}
+    {% load tags %}  
+</head>
+{% block posts %}
+<!-- Beginning of posts list -->
+<ul id="posts">
+  <div style="display:none;" id="currentpost">{{ latest_post.pk }}</div>
+  {% for post in latest_posts_list %}
+  <li class="post" id="post{{ post.pk }}">
+    <!-- Post text and image -->
+    <p class="post-text" id="post_text{{ post.pk }}">{{ post.post_text }}</p>
+    {% if post.image %}
+      <img class="img-fluid" src="{{ post.image.url }}" alt="post-image-{{ post.pk }}">
+    {% endif %}
+    <!-- Post header -->
+    <div class="post-header d-flex align-items-center">
+      <span class="text-left">
+        <a href="{% url 'social:user' post.user.pk %}">{{ post.user.username }}</a> 
+        <span class="post-date">{{ post.get_readable_date }}</span>
+        <!-- Options -->
+        {% if post.user == user %}
+        <button class="btn btn-outline-primary btn-sm" onclick="toggleVisibility('edit{{ post.pk }}');">
+          <img class="icon" src="{% static 'icons/pencil-alt.svg' %}">
+        </button>
+        <button class="btn btn-outline-danger btn-sm" onclick="toggleVisibility('delete{{ post.pk }}');">
+          <img class="icon" alt="delete" src="{% static 'icons/trash-alt.svg' %}">
+        </button>
+        {% endif %}
+        <button class="btn btn-outline-primary btn-sm" onclick="toggleVisibility('comment_in_reply{{ post.pk }}');">
+          <img class="icon" alt="reply" src="{% static 'icons/arrow-down.svg' %}">
+        </button>
+        <!-- Likes, dislikes and comments -->
+        
+        <button class="btn btn-outline-success btn-sm" onclick="like({{ post.pk }})">
+          <img class="icon" src="{% static 'icons/thumbs-up.svg' %}">
+          <span id="total_likes{{ post.pk }}">{% total_likes post %}</span>
+        </button>
+        
+        <button class="btn btn-outline-secondary btn-sm" onclick="dislike({{ post.pk }})">
+          <img class="icon" src="{% static 'icons/thumbs-down.svg' %}">
+          <span id="total_dislikes{{ post.pk }}">{% total_dislikes post %}</span>
+        </button>
+        <a class="btn btn-outline-primary btn-sm" href="/post/{{post.pk}}/comments/" role="button">
+          <img class="icon" alt="comments" src="{% static 'icons/comment.svg' %}">
+          {% total_comments post %}
+        </a>
+      </span>
+    </div>
+    
+    <!-- Hidden options -->
+    
+    {% if post.user == user %}
+    <div class="none my-2 text-left" id="edit{{ post.pk }}">
+      <form onsubmit="editPost('{{ post.pk }}')">
+        <input type="text" name="new_text" placeholder="Edit your post" id="edit-field" maxlength="200" minlength="1" value="{{ post.post_text }}" required="">
+        {{ editform.id.as_hidden }}
+        <button class="btn btn-primary" type="submit">Edit</button>
+      </form>
+    </div>
+    <div class="none my-2 text-left" id="delete{{ post.pk }}">
+      Delete the post?
+      <button class="btn btn-danger" onclick="deletePost({{ post.pk }})">Yes, delete it.</button>
+    </div>
+    {% endif %}
+    <!-- Hidden comment form -->
+    <span class="none" id="comment_in_reply{{ post.pk }}">
+      <form onsubmit="commentInReply({{ post.pk }})">
+        {{ commentform }}
+        <button class="btn btn-primary btn-block" type="submit">Comment</button>
+      </form>
+    </span>
+  </li>
+  <div class="border-bottom border-dark"></div>
+  {% endfor %} <!-- end of the post list -->  
+</ul>
+{% endblock %}
