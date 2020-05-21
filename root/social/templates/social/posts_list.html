@@ -5,7 +5,7 @@
 {% block posts %}
 <!-- Beginning of posts list -->
 <ul id="posts">
-  <div style="display:none;" id="currentpost">{{ latest_post.pk }}</div>
+  <div class="none" id="currentpost">{{ latest_post.pk }}</div>
   {% for post in latest_posts_list %}
   <li class="post" id="post{{ post.pk }}">
     <!-- Post text and image -->

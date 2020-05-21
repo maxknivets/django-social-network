@@ -1,11 +1,14 @@
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from social.models import User, Post, Like, Dislike, Follower, Profile, Comment
 
+@login_required
 def follow(request):
-    user_id = request.GET.get('id')
+    user_id = request.user.pk
     user = get_object_or_404(User, pk=user_id)
-    if request.user.is_authenticated and request.user != user:
+    if request.user != user:
         already_followed = Follower.objects.filter(user=user, is_followed_by=request.user).first()
         if not already_followed:
             new_follower = Follower(user=user, is_followed_by=request.user)
@@ -18,16 +21,14 @@ def follow(request):
             return JsonResponse({'status':'Not following', 'count':follower_count})
     return redirect('/')
 
+@login_required
 def following(request, user_id):
-    if request.user.is_authenticated:
-        user = get_object_or_404(User, pk=user_id)
-        following_list = Follower.objects.filter(is_followed_by=user)
-        return render(request, 'social/following.html',{'theuser':user,'following_list':following_list})
-    return redirect('/')
+    user = get_object_or_404(User, pk=user_id)
+    following_list = Follower.objects.filter(is_followed_by=user)
+    return render(request, 'social/following.html',{'theuser':user,'following_list':following_list})
 
+@login_required
 def followers(request, user_id):
-    if request.user.is_authenticated:
-        user = get_object_or_404(User, pk=user_id)
-        follower_list = Follower.objects.filter(user=user).exclude(is_followed_by=user)
-        return render(request, 'social/followers.html',{'theuser':user,'followers_list':follower_list})
-    return redirect('/')
+    user = get_object_or_404(User, pk=user_id)
+    follower_list = Follower.objects.filter(user=user).exclude(is_followed_by=user)
+    return render(request, 'social/followers.html',{'theuser':user,'followers_list':follower_list})

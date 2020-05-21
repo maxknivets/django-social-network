@@ -48,8 +48,8 @@ class Comment_form(forms.Form):
     in_reply_to_comment = forms.IntegerField(widget=forms.HiddenInput())
 
 class Change_profile_info_form(forms.Form):
-    first_name = forms.CharField(max_length=100, label='', required=False, widget=forms.Textarea(attrs={'rows':'2'}))
-    last_name = forms.CharField(max_length=100, label='', required=False, widget=forms.Textarea(attrs={'rows':'2'}))
+    first_name = forms.CharField(max_length=100, label='', widget=forms.Textarea(attrs={'rows':'2'}))
+    last_name = forms.CharField(max_length=100, label='', widget=forms.Textarea(attrs={'rows':'2'}))
     bio = forms.CharField(max_length=100, label='', required=False, widget=forms.Textarea(attrs={'rows':'2'}))
     location = forms.CharField(max_length=100, label='', required=False, widget=forms.Textarea(attrs={'rows':'2'}))
 

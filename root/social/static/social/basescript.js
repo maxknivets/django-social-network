@@ -189,7 +189,7 @@ function commentInReply(post_id, comment_id=false) {
 			if (in_reply_to_user && in_reply_to_comment) {
 				$(`#comment_in_reply${in_reply_to_comment} #comment-field`).val('');
 				var get_username=data.get_username;
-				var reply=`in reply to <a href="/user/${in_reply_to_user}">${get_username}</a>\'s <a href="/${in_reply_to_comment}/view_comment">comment</a>`;
+				var reply=`in reply to <a href="/user/${in_reply_to_user}">${get_username}</a>\'s <a href="/view_comment/${in_reply_to_comment}">comment</a>`;
 				var comment_type='inreply';
 			}
 			else {
@@ -376,7 +376,7 @@ function addComment(comment_id) {
 			if (in_reply_to_user && in_reply_to_comment) {
 				$(`#comment_in_reply${in_reply_to_comment} #comment-field`).val('');
 				var get_username=data.get_username;
-				var reply=`in reply to <a href="/user/${in_reply_to_user}">${get_username}</a>\'s <a href="/${in_reply_to_comment}/view_comment">comment</a>`;
+				var reply=`in reply to <a href="/user/${in_reply_to_user}">${get_username}</a>\'s <a href="/view_comment/${in_reply_to_comment}">comment</a>`;
 				var comment_type='inreply';
 			}
 			else {

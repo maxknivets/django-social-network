@@ -11,22 +11,11 @@
 
 
 {% block content %}
-<span class="center">
-
-  <form role="form" class="form-horizontal" method="post" action="{% url 'social:login' %}">{% csrf_token %}
-    <div class="loginbox form-group">
-      {% for field in form %}
-        <div class="input-group">
-          <span class="input-group-addon" style="background-color:#b77b48; color:white"><span class="glyphicon glyphicon-user"></span></span>
-          <input class="form-control" id="{{ field.id_for_label }}" maxlength="30" name="{{ field.html_name }}" value="{{ field.value }}" type="text" /> 
-          {{ field.errors }}
-        </div>
-      {% endfor %}
-      <input type="submit" class="btn btn-primary" value="login" />
-      <input type="hidden" name="next" value="{{ next }}" />
-    </div>
-  </form>
-No account? <a href="/signup">Create one!</a>
-</span>
+<form method="post" class="text-center">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" class="btn btn-primary" value="login" />
+  <div>No account? <a href="/signup">Create one!</a></div>
+</form>
 {% endblock %}
 

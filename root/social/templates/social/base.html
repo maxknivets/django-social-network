@@ -23,9 +23,9 @@
           <br>
           <div>
             {% if loggeduserpfp %}
-              <img class="pfp" style="margin: 0 auto;" src="/media/{{ loggeduserpfp }}" alt="{{ theuser.username }}'s profile picture">
+              <img class="pfp center" src="/media/{{ request_user.profile.profile_picture }}" alt="{{ request_user.username }}'s profile picture">
             {% else %}
-              <img class="pfp" style="margin: 0 auto;" src="{% static 'icons/user.svg' %}" alt="user">
+              <img class="pfp center" src="{% static 'icons/user.svg' %}" alt="user">
             {% endif %}
           </div>
           
